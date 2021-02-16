@@ -1,8 +1,8 @@
-# :ticket: Traveling Salesman Problem
+# :ticket: Travelling Salesman Problem
 
 ## About
 
-This project aims to solve the Traveling Salesman Problem for the Linear Programming class unsing an algorithm that implements the Simplex method.
+This project aims to solve the Travelling Salesman Problem for the Linear Programming class unsing an algorithm that implements the Simplex method.
 
 ## The problem
 
