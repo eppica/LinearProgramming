@@ -1,12 +1,13 @@
 import math
+from tabulate import tabulate
 
 base_variables = ['x1', 'x2', 'f1', 'f2', 'f3']
 non_base_variables = ['f1', 'f2', 'f3']
 
 matrix = [
-    [1, 0, 1, 0, 0],
-    [0, 2, 0, 1, 0],
-    [2, 3, 0, 0, 1]
+    [1.0, 0.0, 1.0, 0.0, 0.0],
+    [0.0, 2.0, 0.0, 1.0, 0.0],
+    [2.0, 3.0, 0.0, 0.0, 1.0]
 ]
 
 objective = [-3, -5, 0, 0, 0]
@@ -73,14 +74,37 @@ def scale_matrix():
     total += div * independent_terms[pivot_line_index]
 
 
+def print_matrix():
+    lines = len(independent_terms) + 2
+    columns = len(base_variables) + 2
+    matrix_aux = lines * [columns * ['']]
+    matrix_aux[0] = organize_line('\\', base_variables, 'b')
+    for i in range(lines - 2):
+        matrix_aux[i + 1] = organize_line(non_base_variables[i], matrix[i], independent_terms[i])
+    matrix_aux[lines - 1] = organize_line('Z', objective, total)
+
+    print(tabulate(matrix_aux, headers='firstrow', tablefmt='fancy_grid'))
+
+
+def organize_line(non_base, values, independent):
+    line = (len(base_variables) + 2) * ['']
+    line[0] = str(non_base)
+    for i, value in enumerate(values):
+        line[i + 1] = str(values[i])
+    line[len(values) + 1] = str(independent)
+    return line
+
+
 while not is_optimum_solution(objective):
-
+    print_matrix()
     pivot_column_index = get_pivot_column_index(objective)
-
+    print("Pivot_Column_Index", pivot_column_index)
     pivot_line_index = get_pivot_line_index(pivot_column_index)
-
+    if pivot_line_index == -1:
+        continue
+    print("Pivot_Line_Index", pivot_line_index)
     pivot_number = matrix[pivot_line_index][pivot_column_index]
-
+    print("Pivot_Number", pivot_number)
     non_base_variables[pivot_line_index] = base_variables[pivot_column_index]
 
     reset_pivot_line()
@@ -88,3 +112,5 @@ while not is_optimum_solution(objective):
     scale_matrix()
 
     quotients.clear()
+
+print_matrix()
