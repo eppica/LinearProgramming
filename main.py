@@ -1,20 +1,19 @@
 import math
 from tabulate import tabulate
 
-base_variables = ['x1', 'x2', 'f1', 'f2', 'f3']
-non_base_variables = ['f1', 'f2', 'f3']
+base_variables = ['x1', 'x2', 'f1', 'f2']
+non_base_variables = ['f1', 'f2']
 
 matrix = [
-    [1.0, 0.0, 1.0, 0.0, 0.0],
-    [0.0, 2.0, 0.0, 1.0, 0.0],
-    [2.0, 3.0, 0.0, 0.0, 1.0]
+    [1.0, 4.0, 1.0, 0.0],
+    [1.0, 2.0, 0.0, 1.0]
 ]
 
-objective = [-3, -5, 0, 0, 0]
+objective = [-3, -9, 0, 0]
 
 total = 0
 
-independent_terms = [4, 12, 21]
+independent_terms = [8, 4]
 
 quotients = []
 
@@ -44,8 +43,16 @@ def get_pivot_line_index(j):
 def min_positive(iterable):
     for i, number in enumerate(iterable):
         if number < 0:
-            iterable[i] = inf
-        return min(iterable) if min(iterable) != math.inf else -1
+            iterable[i] = math.inf
+
+        try:
+            if min(iterable) != math.inf:
+                return min(iterable)
+            else:
+                raise Exception('There is no minimum positive')
+        except:
+            print('No optimal solution')
+            exit(1)
 
 
 def reset_pivot_line():
