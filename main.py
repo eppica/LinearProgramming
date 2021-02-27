@@ -38,10 +38,10 @@ def get_pivot_line_index(j):
         else:
             quotients.append(term / coefficient)
 
-    return quotients.index(min_p(quotients))
+    return quotients.index(min_positive(quotients))
 
 
-def min_p(iterable):
+def min_positive(iterable):
     for i, number in enumerate(iterable):
         if number < 0:
             iterable[i] = inf
