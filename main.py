@@ -159,7 +159,7 @@ def print_matrix(column=None, line=None):
                     matrix_aux[i][j] = f'{COLOR["RED"]}{matrix_aux[i][j]}{COLOR["END"]}'
 
         print(tabulate(matrix_aux, headers='firstrow', tablefmt='fancy_grid'))
-
+    print('\n\n')
 
 def organize_line(non_base, values, independent):
     line = (len(base_variables) + 2) * ['']
@@ -223,6 +223,6 @@ while True:
         two_phase()
 
 
-print('\n\n\n======================================================================================================================\n')
+print('\n======================================================================================================================\n')
 print(' Final Table\n')
 print_matrix()
