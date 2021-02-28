@@ -2,7 +2,7 @@
 
 ## About
 
-This project aims to solve the Travelling Salesman Problem for the Linear Programming class using an algorithm that implements the Simplex method.
+This project aims to solve the Travelling Salesman Problem for the Linear Programming class using an algorithm that implements the Simplex method with the Two Phase variation.
 
 ## The problem
 
