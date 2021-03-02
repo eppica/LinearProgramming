@@ -17,25 +17,25 @@ COLOR = {
     "END": '\033[0m'
 }
 
-base_variables = ['x1', 'x2', 'f1', 'f2', 'f3', 'a1']
+base_variables = ['x1', 'x2', 'f1', 'f2', 'a1']
 non_base_variables = ['f1', 'f2', 'a1']
 
 matrix = [
-    [2.0, 0.0, 1.0, 0.0, 0.0, 0.0],
-    [0.0, 4.0, 0.0, 1.0, 0.0, 0.0],
-    [6.0, 4.0, 0.0, 0.0, -1.0, 1.0]
+    [1.0, 0.0, 1.0, 0.0, 0.0],
+    [0.0, 2.0, 0.0, 1.0, 0.0],
+    [3.0, 2.0, 0.0, 0.0, 1.0]
 ]
 
-objective = [-6, -10, 0, 0, 0, M]
+objective = [-3, -5, 0, 0, M]
 
 total = 0
 
-independent_terms = [8, 24, 36]
+independent_terms = [4, 12, 18]
 
 quotients = []
 
 
-def big_m(function):
+def big_m():
     global total
     div = -1 * M
 
@@ -170,7 +170,7 @@ print(' Initial Table\n')
 print_matrix()
 print('\n======================================================================================================================\n')
 
-big_m(objective)
+big_m()
 
 while True:
 
