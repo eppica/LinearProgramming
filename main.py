@@ -17,20 +17,20 @@ COLOR = {
     "END": '\033[0m'
 }
 
-base_variables = ['x1', 'x2', 'f1', 'f2', 'a1']
-non_base_variables = ['f1', 'f2', 'a1']
+base_variables = ['x1', 'x2', 'f1', 'f2', 'f3']
+non_base_variables = ['f1', 'f2', 'f3']
 
 matrix = [
     [1.0, 0.0, 1.0, 0.0, 0.0],
     [0.0, 2.0, 0.0, 1.0, 0.0],
-    [3.0, 2.0, 0.0, 0.0, 1.0]
+    [2.0, 3.0, 0.0, 0.0, 1.0]
 ]
 
-objective = [-3, -5, 0, 0, M]
+objective = [-3, -5, 0, 0, 0]
 
 total = 0
 
-independent_terms = [4, 12, 18]
+independent_terms = [4, 12, 21]
 
 quotients = []
 
@@ -42,8 +42,8 @@ def big_m():
     for i, base in enumerate(non_base_variables):
         if 'a' in base:
 
-            for j, value in enumerate(objective):
-                objective[j] = round(value + div * matrix[i][j], 5)
+            for j in rand(0, len(objective)):
+                objective[j] = round(objective[j] + div * matrix[i][j], 5)
 
             total = round(total + div * independent_terms[i], 5)
 
@@ -67,12 +67,12 @@ def get_pivot_line_index(j):
         else:
             quotients.append(term / coefficient)
 
-    return quotients.index(min_positive(quotients.copy()))
+    return quotients.index(min_positive(quotients))
 
 
 def min_positive(iterable):
     for i, number in enumerate(iterable):
-        if number <= 0:
+        if number < 0:
             iterable[i] = math.inf
 
     try:
@@ -88,17 +88,15 @@ def min_positive(iterable):
 
 def reset_pivot_line():
     for i, number in enumerate(matrix[pivot_line_index]):
-        if number != 0:
-            matrix[pivot_line_index][i] = number / pivot_number
+        matrix[pivot_line_index][i] = number / pivot_number
 
-    if independent_terms[pivot_line_index] != 0:
-        independent_terms[pivot_line_index] = independent_terms[pivot_line_index] / pivot_number
+    independent_terms[pivot_line_index] = independent_terms[pivot_line_index] / pivot_number
 
 
 def scale_matrix():
     global total
     for i, line in enumerate(matrix):
-        if line[pivot_column_index] != 0 and i != pivot_line_index:
+        if i != pivot_line_index:
             div = -1 * line[pivot_column_index]
             for j, value in enumerate(line):
                 matrix[i][j] = round(value + div * matrix[pivot_line_index][j], 5)
@@ -106,8 +104,8 @@ def scale_matrix():
 
     div = -1 * objective[pivot_column_index]
 
-    for j, value in enumerate(objective):
-        objective[j] = round(value + div * matrix[pivot_line_index][j], 5)
+    for j in rand(0, len(objective)):
+        objective[j] = round(objective[j] + div * matrix[pivot_line_index][j], 5)
 
     total = round(total + div * independent_terms[pivot_line_index], 5)
 
@@ -165,7 +163,7 @@ def init():
     os.system('cls')
 
 
-init()
+# init()
 print(' Initial Table\n')
 print_matrix()
 print('\n======================================================================================================================\n')
@@ -177,16 +175,20 @@ while True:
     if not is_optimum_solution(objective):
         pivot_column_index = get_pivot_column_index(objective)
 
-    print("Pivot Column Index", pivot_column_index)
-    pivot_line_index = get_pivot_line_index(pivot_column_index)
-    print("Pivot Line Index", pivot_line_index)
-    pivot_number = matrix[pivot_line_index][pivot_column_index]
-    print("Pivot Number", pivot_number)
-    non_base_variables[pivot_line_index] = base_variables[pivot_column_index]
-    print_matrix(pivot_column_index, pivot_line_index)
-    reset_pivot_line()
+        print("Pivot Column Index", pivot_column_index)
 
-    if not is_optimum_solution(objective):
+        pivot_line_index = get_pivot_line_index(pivot_column_index)
+        print("Pivot Line Index", pivot_line_index)
+
+        pivot_number = matrix[pivot_line_index][pivot_column_index]
+        print("Pivot Number", pivot_number)
+
+        non_base_variables[pivot_line_index] = base_variables[pivot_column_index]
+
+        print_matrix(pivot_column_index, pivot_line_index)
+
+        reset_pivot_line()
+
         scale_matrix()
     else:
         break
