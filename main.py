@@ -41,8 +41,7 @@ def get_pivot_line_index(j):
             quotients.append(math.inf)
         else:
             quotients.append(term / coefficient)
-    quotients.reverse()
-    return len(quotients) - quotients.index(min_positive(quotients)) - 1
+    return quotients.index(min_positive(quotients))
 
 
 def min_positive(iterable):
@@ -129,7 +128,7 @@ def organize_line(non_base, values, independent):
     return line
 
 
-def output_excel(array, c, linha):
+def output_excel(array, column, line):
     global INITIAL_ROW, worksheet
 
     cell_format = workbook.add_format()
@@ -138,22 +137,28 @@ def output_excel(array, c, linha):
     cell_format_pivot = workbook.add_format()
     cell_format_pivot.set_bg_color('#0ABCF4')
 
-    for row_index, line in enumerate(array):
-        for column_index, data in enumerate(line):
-            if c and linha:
-                if row_index == linha + 1 and column_index == c + 1:
+    for row_index, row in enumerate(array):
+        for column_index, data in enumerate(row):
+            if column is not None and line is not None:
+                if row_index == line + 1 and column_index == column + 1:
                     worksheet.write(row_index + INITIAL_ROW, column_index, str(data), cell_format_pivot)
-                elif row_index == linha + 1 or column_index == c + 1:
+                elif row_index == line + 1 or column_index == column + 1:
                     worksheet.write(row_index + INITIAL_ROW, column_index, str(data), cell_format)
                 else:
                     worksheet.write(row_index + INITIAL_ROW, column_index, str(data))
             else:
                 worksheet.write(row_index + INITIAL_ROW, column_index, str(data))
+    if column is not None and line is not None:
+        for row_index, data in enumerate(quotients):
+            if row_index == 0:
+                worksheet.write(row_index + INITIAL_ROW, len(array[0]) + 1, 'divisions')
+                pass
+            worksheet.write(row_index + 1 + INITIAL_ROW, len(array[0]) + 1, str(data))
+
     INITIAL_ROW += len(array) + 1
 
 
-def init():
-
+def header():
     print(
         "   _____ _                 _            \n"
         "  / ____(_)               | |           \n"
@@ -167,6 +172,10 @@ def init():
 
     input(" PRESS ENTER TO START")
     os.system('cls')
+
+
+def init():
+    # header()
     print(' Initial Table\n')
     print_matrix()
     print('\n=======================================================================================================\n')
